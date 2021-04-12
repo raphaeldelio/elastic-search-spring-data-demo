@@ -31,8 +31,6 @@ class RestClientConfig : AbstractElasticsearchConfiguration() {
         val credentialsProvider = BasicCredentialsProvider()
         credentialsProvider.setCredentials(AuthScope.ANY, UsernamePasswordCredentials(user, password))
 
-        var context: SSLContext? = null
-
         val ks = KeyStore.getInstance("pkcs12")
         ks.load(null, null)
 
@@ -46,7 +44,7 @@ class RestClientConfig : AbstractElasticsearchConfiguration() {
         val tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
         tmf.init(ks)
 
-        context = SSLContext.getInstance("TLS")
+        val context = SSLContext.getInstance("TLS")
         context.init(null, tmf.trustManagers, null)
 
         val restClientBuilder = RestClient.builder(
